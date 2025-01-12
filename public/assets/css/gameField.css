@@ -1,0 +1,9 @@
+.fieldCell {
+  width: calc(100% / 3);
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  font-weight: 500;
+}
