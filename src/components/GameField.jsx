@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import '/public/assets/css/gameField.css';
+import FieldCell from './FieldCell';
 
 class GameField extends Component {
   state = {
@@ -40,7 +41,7 @@ class GameField extends Component {
       myGrid = this.getRowsArray();
 
       // controllo tris sulle righe
-      for (const [key, value] of Object.entries(myGrid)) {
+      for (const [, value] of Object.entries(myGrid)) {
         if (value.every((element) => element === 'X')) {
           console.log('TRIS');
           this.setState({ trisDone: true });
@@ -105,16 +106,16 @@ class GameField extends Component {
         this.setState({ trisDone: true });
       }
     }, 100);
+  };
 
-    // for (let i = 0; i < 3; i++) {
-    //   if (
-    //     (this.state.row1[`${this.cels[i]}`] ==
-    //       this.state.row2[`${this.cels[i]}`]) ==
-    //     this.state.row3[`${this.cels[i]}`]
-    //   ) {
-    //     console.log('TRIS!!!');
-    //   }
-    // }
+  updateCellValue = (rowNum, celNum) => {
+    this.setState({
+      row1: {
+        ...this.state.row1,
+        cel1: this.state.currentSymbol ? 'X' : 'O',
+      },
+      currentSymbol: !this.state.currentSymbol,
+    });
   };
 
   render() {
@@ -125,7 +126,7 @@ class GameField extends Component {
           style={{ minWidth: '430px' }}
         >
           <div className='d-flex'>
-            <div
+            {/* <div
               className='fieldCell border-bottom border-end border-1 border-black'
               onClick={() => {
                 if (this.state.row1.cel1 === '' && !this.state.trisDone) {
@@ -141,7 +142,15 @@ class GameField extends Component {
               }}
             >
               {this.state.row1.cel1}
-            </div>
+            </div> */}
+            <FieldCell
+              myCell={this.state.row1.cel1}
+              trisDone={this.state.trisDone}
+              updateCellValue={this.updateCellValue}
+              row={1}
+              cel={1}
+              checkTris={this.checkTris}
+            />
             <div
               className='fieldCell border-start border-bottom border-end border-1 border-black'
               onClick={() => {
