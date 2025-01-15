@@ -8,17 +8,15 @@ const emptyRow = {
   cel3: '',
 };
 
-const GameField = () => {
+const GameField = (props) => {
   // state = {
   //   currentSymbol: true,
   //   row1: { cel1: '', cel2: '', cel3: '' },
   //   row2: { cel1: '', cel2: '', cel3: '' },
   //   row3: { cel1: '', cel2: '', cel3: '' },
-  //   trisDone: false,
   // };
 
   const [currentSymbol, setCurrentSymbol] = useState(true);
-  const [trisDone, setTrisDone] = useState(false);
   const [row1, setRow1] = useState({ ...emptyRow });
   const [row2, setRow2] = useState({ ...emptyRow });
   const [row3, setRow3] = useState({ ...emptyRow });
@@ -40,12 +38,10 @@ const GameField = () => {
       // controllo tris sulle righe
       for (const [, value] of Object.entries(myGrid)) {
         if (value.every((element) => element === 'X')) {
-          console.log('TRIS');
-          setTrisDone(true);
+          itsTris();
         }
         if (value.every((element) => element === 'O')) {
-          console.log('TRIS');
-          setTrisDone(true);
+          itsTris();
         }
       }
 
@@ -56,16 +52,14 @@ const GameField = () => {
           myGrid.row2[i] == 'X' &&
           myGrid.row3[i] == 'X'
         ) {
-          console.log('TRIS');
-          setTrisDone(true);
+          itsTris();
         }
         if (
           myGrid.row1[i] == 'O' &&
           myGrid.row2[i] == 'O' &&
           myGrid.row3[i] == 'O'
         ) {
-          console.log('TRIS');
-          setTrisDone(true);
+          itsTris();
         }
       }
 
@@ -75,34 +69,35 @@ const GameField = () => {
         myGrid.row2[1] == 'X' &&
         myGrid.row3[2] == 'X'
       ) {
-        console.log('TRIS');
-        setTrisDone(true);
+        itsTris();
       }
       if (
         myGrid.row1[2] == 'X' &&
         myGrid.row2[1] == 'X' &&
         myGrid.row3[0] == 'X'
       ) {
-        console.log('TRIS');
-        setTrisDone(true);
+        itsTris();
       }
       if (
         myGrid.row1[0] == 'O' &&
         myGrid.row2[1] == 'O' &&
         myGrid.row3[2] == 'O'
       ) {
-        console.log('TRIS');
-        setTrisDone(true);
+        itsTris();
       }
       if (
         myGrid.row1[2] == 'O' &&
         myGrid.row2[1] == 'O' &&
         myGrid.row3[0] == 'O'
       ) {
-        console.log('TRIS');
-        setTrisDone(true);
+        itsTris();
       }
     }, 100);
+  };
+
+  const itsTris = () => {
+    props.setTrisDone(true);
+    console.log('TRIS');
   };
 
   const updateCellValue = (rowNum, celNum) => {
@@ -163,6 +158,8 @@ const GameField = () => {
         break;
     }
     setCurrentSymbol(!currentSymbol);
+    props.setCurrentPlayer(!props.currentPlayer);
+    console.log(props.currentPlayer);
   };
 
   return (
@@ -171,7 +168,7 @@ const GameField = () => {
         <div className='d-flex'>
           <FieldCell
             myCell={row1.cel1}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={1}
             cel={1}
@@ -181,7 +178,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row1.cel2}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={1}
             cel={2}
@@ -191,7 +188,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row1.cel3}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={1}
             cel={3}
@@ -203,7 +200,7 @@ const GameField = () => {
         <div className='d-flex'>
           <FieldCell
             myCell={row2.cel1}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={2}
             cel={1}
@@ -213,7 +210,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row2.cel2}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={2}
             cel={2}
@@ -223,7 +220,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row2.cel3}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={2}
             cel={3}
@@ -235,7 +232,7 @@ const GameField = () => {
         <div className='d-flex'>
           <FieldCell
             myCell={row3.cel1}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={3}
             cel={1}
@@ -245,7 +242,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row3.cel2}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={3}
             cel={2}
@@ -255,7 +252,7 @@ const GameField = () => {
 
           <FieldCell
             myCell={row3.cel3}
-            trisDone={trisDone}
+            trisDone={props.trisDone}
             updateCellValue={updateCellValue}
             row={3}
             cel={3}
@@ -264,6 +261,14 @@ const GameField = () => {
           />
         </div>
       </div>
+
+      {props.trisDone && (
+        <h4 className='mt-4'>
+          Complimenti!{' '}
+          {!currentSymbol ? props.playerOneName : props.playerTwoName} ha fatto
+          TRIS
+        </h4>
+      )}
     </>
   );
 };

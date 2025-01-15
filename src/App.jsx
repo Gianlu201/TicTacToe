@@ -9,6 +9,8 @@ function App() {
   const [namesGiven, setNamesGiven] = useState(false);
   const [playerOneName, setPlayerOneName] = useState('');
   const [playerTwoName, setPlayerTwoName] = useState('');
+  const [currentPlayer, setCurrentPlayer] = useState(true);
+  const [trisDone, setTrisDone] = useState(false);
 
   return (
     <>
@@ -44,17 +46,41 @@ function App() {
 
         {namesGiven && (
           <Row>
-            <Col lg={4}>
+            <Col lg={4} className='pt-5'>
               <PlayersScore
                 playerOneName={playerOneName}
                 playerTwoName={playerTwoName}
+                trisDone={trisDone}
+                currentPlayer={currentPlayer}
               />
+
+              {!trisDone ? (
+                <>
+                  <p>
+                    <span className='fw-bold'>
+                      {currentPlayer ? playerOneName : playerTwoName}
+                    </span>
+                    &apos;s turn with
+                    <span className='fs-4 fw-bold d-inline-block ms-2'>
+                      {currentPlayer ? 'X' : 'O'}
+                    </span>
+                  </p>
+                </>
+              ) : (
+                <div className='d-flex justify-content-center mt-5'>
+                  <Button variant='success'>Start new game!</Button>
+                </div>
+              )}
             </Col>
-            <Col
-              lg={8}
-              className='border border-1 border-success d-flex justify-content-center py-5'
-            >
-              <GameField />
+            <Col lg={8} className='d-flex flex-column align-items-center py-5'>
+              <GameField
+                playerOneName={playerOneName}
+                playerTwoName={playerTwoName}
+                currentPlayer={currentPlayer}
+                setCurrentPlayer={setCurrentPlayer}
+                trisDone={trisDone}
+                setTrisDone={setTrisDone}
+              />
             </Col>
           </Row>
         )}

@@ -7,6 +7,14 @@ class PlayersScore extends Component {
     player2Score: 0,
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.trisDone !== this.props.trisDone) {
+      !this.props.currentPlayer
+        ? this.setState({ player1Score: this.state.player1Score + 1 })
+        : this.setState({ player2Score: this.state.player2Score + 1 });
+    }
+  }
+
   render() {
     return (
       <>

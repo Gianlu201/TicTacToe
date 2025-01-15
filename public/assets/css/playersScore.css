@@ -1,3 +1,4 @@
 .playerName {
   display: block;
+  min-width: 120px;
 }
