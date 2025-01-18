@@ -20,6 +20,8 @@ const GameField = (props) => {
   const [row1, setRow1] = useState({ ...emptyRow });
   const [row2, setRow2] = useState({ ...emptyRow });
   const [row3, setRow3] = useState({ ...emptyRow });
+  const [counter, setCounter] = useState(1);
+  const [moves, setMoves] = useState(0);
 
   const getRowsArray = () => {
     const myObj = {
@@ -38,10 +40,10 @@ const GameField = (props) => {
       // controllo tris sulle righe
       for (const [, value] of Object.entries(myGrid)) {
         if (value.every((element) => element === 'X')) {
-          itsTris();
+          itIsTris();
         }
         if (value.every((element) => element === 'O')) {
-          itsTris();
+          itIsTris();
         }
       }
 
@@ -52,14 +54,14 @@ const GameField = (props) => {
           myGrid.row2[i] == 'X' &&
           myGrid.row3[i] == 'X'
         ) {
-          itsTris();
+          itIsTris();
         }
         if (
           myGrid.row1[i] == 'O' &&
           myGrid.row2[i] == 'O' &&
           myGrid.row3[i] == 'O'
         ) {
-          itsTris();
+          itIsTris();
         }
       }
 
@@ -69,34 +71,35 @@ const GameField = (props) => {
         myGrid.row2[1] == 'X' &&
         myGrid.row3[2] == 'X'
       ) {
-        itsTris();
+        itIsTris();
       }
       if (
         myGrid.row1[2] == 'X' &&
         myGrid.row2[1] == 'X' &&
         myGrid.row3[0] == 'X'
       ) {
-        itsTris();
+        itIsTris();
       }
       if (
         myGrid.row1[0] == 'O' &&
         myGrid.row2[1] == 'O' &&
         myGrid.row3[2] == 'O'
       ) {
-        itsTris();
+        itIsTris();
       }
       if (
         myGrid.row1[2] == 'O' &&
         myGrid.row2[1] == 'O' &&
         myGrid.row3[0] == 'O'
       ) {
-        itsTris();
+        itIsTris();
       }
     }, 100);
   };
 
-  const itsTris = () => {
+  const itIsTris = () => {
     props.setTrisDone(true);
+
     console.log('TRIS');
   };
 
@@ -157,17 +160,35 @@ const GameField = (props) => {
         }
         break;
     }
+    if (moves === 8) {
+      props.setItIsPair(true);
+    }
+    setMoves((moves) => moves + 1);
     setCurrentSymbol(!currentSymbol);
     props.setCurrentPlayer(!props.currentPlayer);
-    console.log(props.currentPlayer);
   };
 
   useEffect(() => {
     if (props.newGame === true) {
+      props.setPrevFields((prevFields) => {
+        return [
+          ...prevFields,
+          {
+            row1,
+            row2,
+            row3,
+            id: counter,
+          },
+        ];
+      });
+
+      setCounter((count) => count + 1);
+
       setRow1({ ...emptyRow });
       setRow2({ ...emptyRow });
       setRow3({ ...emptyRow });
       setCurrentSymbol(true);
+      setMoves(0);
     }
   }, [props.newGame]);
 
@@ -278,6 +299,8 @@ const GameField = (props) => {
           TRIS
         </h4>
       )}
+
+      {moves === 9 && <h4 className='mt-4'>PAREGGIO!!</h4>}
     </>
   );
 };

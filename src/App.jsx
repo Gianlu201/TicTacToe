@@ -4,6 +4,7 @@ import GameField from './components/GameField';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '/public/assets/css/app.css';
 import { useEffect, useState } from 'react';
+import PrevGamesBox from './components/PrevGamesBox';
 
 function App() {
   const [namesGiven, setNamesGiven] = useState(false);
@@ -11,10 +12,13 @@ function App() {
   const [playerTwoName, setPlayerTwoName] = useState('');
   const [currentPlayer, setCurrentPlayer] = useState(true);
   const [trisDone, setTrisDone] = useState(false);
+  const [itIsPair, setItIsPair] = useState(false);
   const [newGame, setNewGame] = useState(false);
+  const [prevFields, setPrevFields] = useState([]);
 
   const restartGame = () => {
     setTrisDone(false);
+    setItIsPair(false);
     setCurrentPlayer(true);
 
     setNewGame(false);
@@ -32,7 +36,12 @@ function App() {
         {!namesGiven && (
           <div className='namesModule text-center'>
             <h2 className='mb-5'>Put Players&apos; names below:</h2>
-            <Form onSubmit={() => setNamesGiven(true)}>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setNamesGiven(true);
+              }}
+            >
               <div className='d-flex justify-content-center align-items-center mb-3'>
                 <Form.Label className='me-2'>Player1</Form.Label>
                 <Form.Control
@@ -68,7 +77,7 @@ function App() {
                 currentPlayer={currentPlayer}
               />
 
-              {!trisDone ? (
+              {!trisDone && !itIsPair && (
                 <>
                   <p>
                     <span className='fw-bold'>
@@ -80,7 +89,9 @@ function App() {
                     </span>
                   </p>
                 </>
-              ) : (
+              )}
+
+              {(trisDone || itIsPair) && (
                 <div className='d-flex justify-content-center mt-5'>
                   <Button variant='info' onClick={() => setNewGame(true)}>
                     Start new game!
@@ -96,8 +107,12 @@ function App() {
                 setCurrentPlayer={setCurrentPlayer}
                 trisDone={trisDone}
                 setTrisDone={setTrisDone}
+                setItIsPair={setItIsPair}
                 newGame={newGame}
+                setPrevFields={setPrevFields}
               />
+
+              <PrevGamesBox prevFields={prevFields} />
             </Col>
           </Row>
         )}
