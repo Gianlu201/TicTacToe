@@ -9,9 +9,11 @@ class PlayersScore extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.trisDone !== this.props.trisDone) {
-      !this.props.currentPlayer
-        ? this.setState({ player1Score: this.state.player1Score + 1 })
-        : this.setState({ player2Score: this.state.player2Score + 1 });
+      if (this.props.trisDone === true) {
+        !this.props.currentPlayer
+          ? this.setState({ player1Score: this.state.player1Score + 1 })
+          : this.setState({ player2Score: this.state.player2Score + 1 });
+      }
     }
   }
 

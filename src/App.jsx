@@ -3,7 +3,7 @@ import PlayersScore from './components/PlayersScore';
 import GameField from './components/GameField';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '/public/assets/css/app.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [namesGiven, setNamesGiven] = useState(false);
@@ -11,6 +11,20 @@ function App() {
   const [playerTwoName, setPlayerTwoName] = useState('');
   const [currentPlayer, setCurrentPlayer] = useState(true);
   const [trisDone, setTrisDone] = useState(false);
+  const [newGame, setNewGame] = useState(false);
+
+  const restartGame = () => {
+    setTrisDone(false);
+    setCurrentPlayer(true);
+
+    setNewGame(false);
+  };
+
+  useEffect(() => {
+    if (newGame === true) {
+      restartGame();
+    }
+  }, [newGame]);
 
   return (
     <>
@@ -68,7 +82,9 @@ function App() {
                 </>
               ) : (
                 <div className='d-flex justify-content-center mt-5'>
-                  <Button variant='success'>Start new game!</Button>
+                  <Button variant='info' onClick={() => setNewGame(true)}>
+                    Start new game!
+                  </Button>
                 </div>
               )}
             </Col>
@@ -80,6 +96,7 @@ function App() {
                 setCurrentPlayer={setCurrentPlayer}
                 trisDone={trisDone}
                 setTrisDone={setTrisDone}
+                newGame={newGame}
               />
             </Col>
           </Row>

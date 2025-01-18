@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '/public/assets/css/gameField.css';
 import FieldCell from './FieldCell';
 
@@ -161,6 +161,15 @@ const GameField = (props) => {
     props.setCurrentPlayer(!props.currentPlayer);
     console.log(props.currentPlayer);
   };
+
+  useEffect(() => {
+    if (props.newGame === true) {
+      setRow1({ ...emptyRow });
+      setRow2({ ...emptyRow });
+      setRow3({ ...emptyRow });
+      setCurrentSymbol(true);
+    }
+  }, [props.newGame]);
 
   return (
     <>
